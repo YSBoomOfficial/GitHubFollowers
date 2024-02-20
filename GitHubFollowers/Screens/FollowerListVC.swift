@@ -14,6 +14,20 @@ class FollowerListVC: UIViewController {
 		super.viewDidLoad()
 		view.backgroundColor = .systemBackground
 		navigationController?.navigationBar.prefersLargeTitles = true
+		
+		NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] result in
+			guard let self else { return }
+			
+			switch result {
+			case let .success(followers): print(followers)
+			case let .failure(error):
+				self.presentGFAlert(
+					title: "Something went wrong",
+					message: error.rawValue,
+					buttonTitle: "Ok"
+				)
+			}
+		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
