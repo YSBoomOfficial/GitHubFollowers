@@ -89,7 +89,7 @@
 				D3425D912B842EE100CC64FD /* Views */,
 				D361178F2B851CF3002DE457 /* Managers */,
 				D31A55652B84FBCC00C90A31 /* Model */,
-				D3425D922B842F1700CC64FD /* Extensions */,
+				D3425D922B842F1700CC64FD /* Utils */,
 				D3425D932B842F5600CC64FD /* Support */,
 				D325806A2B8385A700F7ECF3 /* Info.plist */,
 			);
@@ -118,12 +118,12 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		D3425D922B842F1700CC64FD /* Extensions */ = {
+		D3425D922B842F1700CC64FD /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				D3425D8E2B842A1700CC64FD /* UIViewController+Ext.swift */,
 			);
-			path = Extensions;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		D3425D932B842F5600CC64FD /* Support */ = {
