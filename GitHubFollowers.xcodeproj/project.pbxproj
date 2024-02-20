@@ -70,22 +70,54 @@
 		D325805B2B8385A600F7ECF3 /* GitHubFollowers */ = {
 			isa = PBXGroup;
 			children = (
-				D325805C2B8385A600F7ECF3 /* AppDelegate.swift */,
-				D325805E2B8385A600F7ECF3 /* SceneDelegate.swift */,
+				D3425D902B842EB100CC64FD /* Screens */,
+				D3425D912B842EE100CC64FD /* Views */,
+				D3425D922B842F1700CC64FD /* Extensions */,
+				D3425D932B842F5600CC64FD /* Support */,
+				D325806A2B8385A700F7ECF3 /* Info.plist */,
+			);
+			path = GitHubFollowers;
+			sourceTree = "<group>";
+		};
+		D3425D902B842EB100CC64FD /* Screens */ = {
+			isa = PBXGroup;
+			children = (
 				D33249B42B83918B0086B17F /* SearchVC.swift */,
-				D3425D8C2B84237F00CC64FD /* GFAlertVC.swift */,
 				D33249B62B83922C0086B17F /* FavouritesListVC.swift */,
 				D33249C82B83A97C0086B17F /* FollowerListVC.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		D3425D912B842EE100CC64FD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D3425D8C2B84237F00CC64FD /* GFAlertVC.swift */,
 				D33249C42B839D3D0086B17F /* GFButton.swift */,
 				D33249C62B839D450086B17F /* GFTextField.swift */,
 				D3425D882B84219500CC64FD /* GFTitleLabel.swift */,
 				D3425D8A2B8422E400CC64FD /* GFBodyLabel.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		D3425D922B842F1700CC64FD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
 				D3425D8E2B842A1700CC64FD /* UIViewController+Ext.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D3425D932B842F5600CC64FD /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				D325805C2B8385A600F7ECF3 /* AppDelegate.swift */,
+				D325805E2B8385A600F7ECF3 /* SceneDelegate.swift */,
 				D32580652B8385A700F7ECF3 /* Assets.xcassets */,
 				D32580672B8385A700F7ECF3 /* LaunchScreen.storyboard */,
-				D325806A2B8385A700F7ECF3 /* Info.plist */,
 			);
-			path = GitHubFollowers;
+			path = Support;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
