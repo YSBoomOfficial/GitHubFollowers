@@ -8,13 +8,20 @@
 import UIKit
 
 class FollowerListVC: UIViewController {
-	var username: String!
+	enum Section {
+		case main
+	}
+	
 	var collectionView: UICollectionView!
+	var datasource: UICollectionViewDiffableDataSource<Section, Follower>!
+	
+	var username: String!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		configureVC()
 		configureCollectionView()
+		configureDataSource()
 		fetchFollowers()
 	}
 	
@@ -24,18 +31,29 @@ class FollowerListVC: UIViewController {
 	}
 	
 	private func fetchFollowers() {
+		// [weak self] needed as NetworkManager has strong the VC
 		NetworkManager.shared.getFollowers(for: username, page: 1) { [weak self] result in
 			guard let self else { return }
 			
 			switch result {
-			case let .success(followers): print(followers)
+			case let .success(fetchedFollowers):
+				updateData(with: fetchedFollowers)
 			case let .failure(error):
-				self.presentGFAlert(
+				presentGFAlert(
 					title: "Something went wrong",
 					message: error.rawValue,
 					buttonTitle: "Ok"
 				)
 			}
+		}
+	}
+	
+	private func updateData(with followers: [Follower]) {
+		var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
+		snapshot.appendSections([.main])
+		snapshot.appendItems(followers)
+		DispatchQueue.main.async {
+			self.datasource.apply(snapshot, animatingDifferences: true)
 		}
 	}
 }
@@ -47,23 +65,21 @@ private extension FollowerListVC {
 	}
 	
 	func configureCollectionView() {
-		collectionView = .init(frame: view.bounds, collectionViewLayout: create3ColumnFlowLayout())
+		collectionView = .init(
+			frame: view.bounds,
+			collectionViewLayout: UIHelper.create3ColumnFlowLayout(in: view)
+		)
 		view.addSubview(collectionView)
 		collectionView.backgroundColor = .systemBackground
 		collectionView.register(FollowerCell.self, forCellWithReuseIdentifier: FollowerCell.reuseId)
 	}
 	
-	func create3ColumnFlowLayout() -> UICollectionViewFlowLayout {
-		let width = view.bounds.width
-		let padding: CGFloat = 12
-		let minItemSpacing: CGFloat = 10
-		let availableWidth = width - (2*padding) - (2*minItemSpacing)
-		let itemWidth = availableWidth / 3
-		
-		let flowLayout = UICollectionViewFlowLayout()
-		flowLayout.sectionInset = .init(top: padding, left: padding, bottom: padding, right: padding)
-		flowLayout.itemSize = .init(width: itemWidth, height: itemWidth + 40)
-		return flowLayout
+	func configureDataSource() {
+		datasource = .init(collectionView: collectionView) { collectionView, indexPath, follower in
+			let cell = collectionView.dequeueReusableCell(withReuseIdentifier: FollowerCell.reuseId, for: indexPath) as! FollowerCell
+			cell.set(follower: follower)
+			return cell
+		}
 	}
 }
 
