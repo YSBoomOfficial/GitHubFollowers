@@ -40,12 +40,22 @@ class FollowerListVC: UIViewController {
 		NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
 			guard let self else { return }
 			hideLoadingView()
-			
+			 
 			switch result {
 			case let .success(fetchedFollowers):
 				if fetchedFollowers.count < 100 { hasMoreFollowers = false }
 				followers.append(contentsOf: fetchedFollowers)
-				updateData()
+				
+				if followers.isEmpty {
+					DispatchQueue.main.async {
+						self.showEmptyStateView(
+							with: "This user doesn't have any followers. Go follow them 😀",
+							in: self.view
+						)
+					}
+				} else {
+					updateData()
+				}
 			case let .failure(error):
 				presentGFAlert(
 					title: "Something went wrong",
