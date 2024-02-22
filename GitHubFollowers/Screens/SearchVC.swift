@@ -61,7 +61,7 @@ fileprivate extension SearchVC {
 	func configureLogoImageView() {
 		view.addSubview(logoImageView)
 		logoImageView.translatesAutoresizingMaskIntoConstraints = false
-		logoImageView.image = .init(named: "gh-logo")!
+		logoImageView.image = .init(named: Images.ghLogo)!
 		
 		NSLayoutConstraint.activate([
 			logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),

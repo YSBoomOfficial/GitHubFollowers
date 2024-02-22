@@ -85,7 +85,7 @@ private extension GFUserInfoHeaderVC {
 	func configureLocationImageView() {
 		view.addSubview(locationImageView)
 		locationImageView.translatesAutoresizingMaskIntoConstraints = false
-		locationImageView.image = .init(systemName: "mappin.and.ellipse")!
+		locationImageView.image = .init(systemName: SFSymbols.location)!
 		locationImageView.tintColor = .secondaryLabel
 		
 		NSLayoutConstraint.activate([
