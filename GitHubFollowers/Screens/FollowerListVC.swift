@@ -16,6 +16,7 @@ class FollowerListVC: UIViewController {
 	var datasource: UICollectionViewDiffableDataSource<Section, Follower>!
 	
 	var followers = [Follower]()
+	var filteredFollowers = [Follower]()
 	
 	var username: String!
 	var hasMoreFollowers = true
@@ -26,6 +27,7 @@ class FollowerListVC: UIViewController {
 		configureVC()
 		configureCollectionView()
 		configureDataSource()
+		configureSearchController()
 		fetchFollowers(for: username, page: currentPage)
 	}
 	
@@ -54,7 +56,7 @@ class FollowerListVC: UIViewController {
 						)
 					}
 				} else {
-					updateData()
+					updateData(with: followers)
 				}
 			case let .failure(error):
 				presentGFAlert(
@@ -66,7 +68,7 @@ class FollowerListVC: UIViewController {
 		}
 	}
 	
-	private func updateData() {
+	private func updateData(with followers: [Follower]) {
 		var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
 		snapshot.appendSections([.main])
 		snapshot.appendItems(followers)
@@ -100,6 +102,14 @@ private extension FollowerListVC {
 			return cell
 		}
 	}
+	
+	func configureSearchController() {
+		let searchController = UISearchController()
+		searchController.searchResultsUpdater = self
+		searchController.searchBar.delegate = self
+		searchController.searchBar.placeholder = "Search for a username"
+		navigationItem.searchController = searchController
+	}
 }
 
 extension FollowerListVC: UICollectionViewDelegate {
@@ -114,3 +124,16 @@ extension FollowerListVC: UICollectionViewDelegate {
 		}
 	}
 }
+
+extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
+	func updateSearchResults(for searchController: UISearchController) {
+		guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+		filteredFollowers = followers.filter { $0.login.localizedCaseInsensitiveContains(filter) }
+		updateData(with: filteredFollowers)
+	}
+	
+	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		updateData(with: followers)
+	}
+}
+
