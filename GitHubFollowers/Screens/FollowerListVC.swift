@@ -22,6 +22,8 @@ class FollowerListVC: UIViewController {
 	var hasMoreFollowers = true
 	var currentPage = 1
 	
+	var isSearching = false
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		configureVC()
@@ -123,16 +125,30 @@ extension FollowerListVC: UICollectionViewDelegate {
 			fetchFollowers(for: username, page: currentPage)
 		}
 	}
+	
+	func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+		let activeArray = isSearching ? filteredFollowers : followers
+		let follower = activeArray[indexPath.item]
+		
+		let uerInfoVC = UserInfoVC()
+		uerInfoVC.username = follower.login
+		
+		let navigationController = UINavigationController(rootViewController: uerInfoVC)
+		present(navigationController, animated: true)
+	}
+	
 }
 
 extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
 	func updateSearchResults(for searchController: UISearchController) {
 		guard let filter = searchController.searchBar.text, !filter.isEmpty else { return }
+		isSearching = true
 		filteredFollowers = followers.filter { $0.login.localizedCaseInsensitiveContains(filter) }
 		updateData(with: filteredFollowers)
 	}
 	
 	func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+		isSearching = false
 		updateData(with: followers)
 	}
 }
