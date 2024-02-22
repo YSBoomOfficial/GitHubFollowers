@@ -20,7 +20,7 @@ class NetworkManager {
 		page: Int,
 		completion: @escaping (Result<[Follower], GFError>) -> Void
 	) {
-		let endpoint = "\(baseEndpoint)/\(username)/followers?per_page=100page=\(page)"
+		let endpoint = "\(baseEndpoint)/\(username)/followers?per_page=100&page=\(page)"
 		print("Calling Endpoint: \(endpoint)")
 		
 		guard let url = URL(string: endpoint) else {
