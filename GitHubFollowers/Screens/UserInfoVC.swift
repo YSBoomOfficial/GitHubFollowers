@@ -14,6 +14,24 @@ class UserInfoVC: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		configureVC()
+		fetchUserInfo() 
+	}
+	
+	private func fetchUserInfo() {
+		NetworkManager.shared.getUser(for: username) { [weak self] result in
+			guard let self else { return }
+			
+			switch result {
+			case let .success(userInfo):
+				print(userInfo)
+			case let .failure(error):
+				presentGFAlert(
+					title: "Something went wrong",
+					message: error.rawValue,
+					buttonTitle: "Ok"
+				)
+			}
+		}
 	}
 	
 	@objc private func dismissModal() {
@@ -23,7 +41,6 @@ class UserInfoVC: UIViewController {
 }
 
 private extension UserInfoVC {
-	
 	func configureVC() {
 		view.backgroundColor = .systemBackground
 		navigationItem.rightBarButtonItem = UIBarButtonItem(
