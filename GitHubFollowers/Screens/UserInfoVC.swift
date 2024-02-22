@@ -8,13 +8,15 @@
 import UIKit
 
 class UserInfoVC: UIViewController {
-	
 	var username: String!
+	
+	let headerView = UIView()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		configureVC()
-		fetchUserInfo() 
+		configureSubviews()
+		fetchUserInfo()
 	}
 	
 	private func fetchUserInfo() {
@@ -22,8 +24,10 @@ class UserInfoVC: UIViewController {
 			guard let self else { return }
 			
 			switch result {
-			case let .success(userInfo):
-				print(userInfo)
+			case let .success(user):
+				DispatchQueue.main.async {
+					self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
+				}
 			case let .failure(error):
 				presentGFAlert(
 					title: "Something went wrong",
@@ -49,6 +53,22 @@ private extension UserInfoVC {
 			target: self,
 			action: #selector(dismissModal)
 		)
+	}
+	
+	func configureSubviews() {
+		configureHeaderView()
+	}
+	
+	func configureHeaderView() {
+		view.addSubview(headerView)
+		headerView.translatesAutoresizingMaskIntoConstraints = false
+		
+		NSLayoutConstraint.activate([
+			headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+			headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			headerView.heightAnchor.constraint(equalToConstant: 180)
+		])
 	}
 
 }
