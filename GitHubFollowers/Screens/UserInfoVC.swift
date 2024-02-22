@@ -11,6 +11,8 @@ class UserInfoVC: UIViewController {
 	var username: String!
 	
 	let headerView = UIView()
+	let itemView1 = UIView()
+	let itemView2 = UIView()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -56,19 +58,30 @@ private extension UserInfoVC {
 	}
 	
 	func configureSubviews() {
-		configureHeaderView()
-	}
-	
-	func configureHeaderView() {
-		view.addSubview(headerView)
-		headerView.translatesAutoresizingMaskIntoConstraints = false
+		let padding: CGFloat = 20
+		
+		for itemView in [headerView, itemView1, itemView2] {
+			view.addSubview(itemView)
+			itemView.translatesAutoresizingMaskIntoConstraints = false
+			
+			NSLayoutConstraint.activate([
+				itemView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+				itemView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+			])
+		}
 		
 		NSLayoutConstraint.activate([
-			headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-			headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			headerView.heightAnchor.constraint(equalToConstant: 180)
+			headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
+			headerView.heightAnchor.constraint(equalToConstant: 180),
+			
+			itemView1.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
+			itemView1.heightAnchor.constraint(equalToConstant: 140),
+			
+			itemView2.topAnchor.constraint(equalTo: itemView1.bottomAnchor, constant: padding),
+			itemView2.heightAnchor.constraint(equalToConstant: 140)
 		])
+		
+		itemView1.backgroundColor = .systemCyan
+		itemView2.backgroundColor = .systemMint
 	}
-
 }

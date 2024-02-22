@@ -17,7 +17,6 @@ class GFUserInfoHeaderVC: UIViewController {
 	let locationLabel = GFSecondaryTitleLabel(size: 18)
 	let bioLabel = GFBodyLabel(alignment: .left)
 	
-	private let padding: CGFloat = 20
 	private let textImagePadding: CGFloat = 12
 	
 	init(user: User) {
@@ -52,8 +51,8 @@ private extension GFUserInfoHeaderVC {
 		avatarImageView.downloadImage(from: user.avatarUrl)
 		
 		NSLayoutConstraint.activate([
-			avatarImageView.topAnchor.constraint(equalTo: view.topAnchor, constant: padding),
-			avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+			avatarImageView.topAnchor.constraint(equalTo: view.topAnchor),
+			avatarImageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 			avatarImageView.widthAnchor.constraint(equalToConstant: 90),
 			avatarImageView.heightAnchor.constraint(equalToConstant: 90)
 		])
@@ -66,7 +65,7 @@ private extension GFUserInfoHeaderVC {
 		NSLayoutConstraint.activate([
 			usernameLabel.topAnchor.constraint(equalTo: avatarImageView.topAnchor),
 			usernameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: textImagePadding),
-			usernameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+			usernameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 			usernameLabel.heightAnchor.constraint(equalToConstant: 38)
 		])
 	}
@@ -78,7 +77,7 @@ private extension GFUserInfoHeaderVC {
 		NSLayoutConstraint.activate([
 			nameLabel.centerYAnchor.constraint(equalTo: avatarImageView.centerYAnchor, constant: 8),
 			nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: textImagePadding),
-			nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+			nameLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 			nameLabel.heightAnchor.constraint(equalToConstant: 20)
 		])
 	}
@@ -104,7 +103,7 @@ private extension GFUserInfoHeaderVC {
 		NSLayoutConstraint.activate([
 			locationLabel.centerYAnchor.constraint(equalTo: locationImageView.centerYAnchor),
 			locationLabel.leadingAnchor.constraint(equalTo: locationImageView.trailingAnchor, constant: 5),
-			locationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+			locationLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 			locationLabel.heightAnchor.constraint(equalToConstant: 20)
 		])
 	}
@@ -116,9 +115,9 @@ private extension GFUserInfoHeaderVC {
 		
 		NSLayoutConstraint.activate([
 			bioLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: textImagePadding),
-			bioLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
-			bioLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
-			bioLabel.heightAnchor.constraint(equalToConstant: 70)
+			bioLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			bioLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			bioLabel.heightAnchor.constraint(equalToConstant: 80)
 		])
 	}
 }
