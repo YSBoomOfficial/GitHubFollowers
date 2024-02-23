@@ -13,6 +13,7 @@ class UserInfoVC: UIViewController {
 	let headerView = UIView()
 	let itemView1 = UIView()
 	let itemView2 = UIView()
+	let dateLabel = GFBodyLabel(alignment: .center)
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -31,6 +32,7 @@ class UserInfoVC: UIViewController {
 					self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
 					self.add(childVC: GFRepoItemVC(user: user), to: self.itemView1)
 					self.add(childVC: GFFollowerItemVC(user: user), to: self.itemView2)
+					self.dateLabel.text = "GitHub since " + user.createdAt.convertToFormattedDateString()
 				}
 			case let .failure(error):
 				presentGFAlert(
@@ -62,7 +64,7 @@ private extension UserInfoVC {
 	func configureSubviews() {
 		let padding: CGFloat = 20
 		
-		for itemView in [headerView, itemView1, itemView2] {
+		for itemView in [headerView, itemView1, itemView2, dateLabel] {
 			view.addSubview(itemView)
 			itemView.translatesAutoresizingMaskIntoConstraints = false
 			
@@ -80,7 +82,10 @@ private extension UserInfoVC {
 			itemView1.heightAnchor.constraint(equalToConstant: 140),
 			
 			itemView2.topAnchor.constraint(equalTo: itemView1.bottomAnchor, constant: padding),
-			itemView2.heightAnchor.constraint(equalToConstant: 140)
+			itemView2.heightAnchor.constraint(equalToConstant: 140),
+			
+			dateLabel.topAnchor.constraint(equalTo: itemView2.bottomAnchor, constant: padding),
+			dateLabel.heightAnchor.constraint(equalToConstant: 40)
 		])
 	}
 }
