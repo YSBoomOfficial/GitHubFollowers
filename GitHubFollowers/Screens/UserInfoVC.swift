@@ -29,6 +29,8 @@ class UserInfoVC: UIViewController {
 			case let .success(user):
 				DispatchQueue.main.async {
 					self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
+					self.add(childVC: GFRepoItemVC(user: user), to: self.itemView1)
+					self.add(childVC: GFFollowerItemVC(user: user), to: self.itemView2)
 				}
 			case let .failure(error):
 				presentGFAlert(
@@ -80,8 +82,5 @@ private extension UserInfoVC {
 			itemView2.topAnchor.constraint(equalTo: itemView1.bottomAnchor, constant: padding),
 			itemView2.heightAnchor.constraint(equalToConstant: 140)
 		])
-		
-		itemView1.backgroundColor = .systemCyan
-		itemView2.backgroundColor = .systemMint
 	}
 }
