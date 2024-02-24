@@ -7,6 +7,11 @@
 
 import UIKit
 
+protocol UserInfoVCDelegate: AnyObject {
+	func didTapGitHubProfile(for user: User)
+	func didTapGetFollowers(for user: User)
+}
+
 class UserInfoVC: UIViewController {
 	var username: String!
 	
@@ -14,6 +19,8 @@ class UserInfoVC: UIViewController {
 	let itemView1 = UIView()
 	let itemView2 = UIView()
 	let dateLabel = GFBodyLabel(alignment: .center)
+	
+	weak var delegate: FollowerListVCDelegate!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -29,10 +36,7 @@ class UserInfoVC: UIViewController {
 			switch result {
 			case let .success(user):
 				DispatchQueue.main.async {
-					self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
-					self.add(childVC: GFRepoItemVC(user: user), to: self.itemView1)
-					self.add(childVC: GFFollowerItemVC(user: user), to: self.itemView2)
-					self.dateLabel.text = "GitHub since " + user.createdAt.convertToFormattedDateString()
+					self.addSections(for: user)
 				}
 			case let .failure(error):
 				presentGFAlert(
@@ -44,7 +48,7 @@ class UserInfoVC: UIViewController {
 		}
 	}
 	
-	@objc private func dismissModal() {
+	@objc private func dismissVC() {
 		dismiss(animated: true)
 	}
 	
@@ -57,7 +61,7 @@ private extension UserInfoVC {
 			title: "Done",
 			style: .done,
 			target: self,
-			action: #selector(dismissModal)
+			action: #selector(dismissVC)
 		)
 	}
 	
@@ -87,5 +91,46 @@ private extension UserInfoVC {
 			dateLabel.topAnchor.constraint(equalTo: itemView2.bottomAnchor, constant: padding),
 			dateLabel.heightAnchor.constraint(equalToConstant: 40)
 		])
+	}
+	
+	func addSections(for user: User) {
+		self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
+		
+		let repoItemVC = GFRepoItemVC(user: user)
+		repoItemVC.delegate = self
+		self.add(childVC: repoItemVC, to: self.itemView1)
+		
+		let followerItemVC = GFFollowerItemVC(user: user)
+		followerItemVC.delegate = self
+		self.add(childVC: followerItemVC, to: self.itemView2)
+		
+		self.dateLabel.text = "GitHub since " + user.createdAt.convertToFormattedDateString()
+	}
+}
+
+extension UserInfoVC: UserInfoVCDelegate {
+	func didTapGitHubProfile(for user: User) {
+		guard let url = URL(string: user.htmlUrl) else {
+			presentGFAlert(
+				title: "Invalid URL",
+				message: "The URL attached to this user is invalid",
+				buttonTitle: "Ok"
+			)
+			return
+		}
+		presentSafariVC(with: url)
+	}
+	
+	func didTapGetFollowers(for user: User) {
+		guard user.followers > 0 else {
+			presentGFAlert(
+				title: "No Followers",
+				message: "This User has no followers. What a shame 😞",
+				buttonTitle: "So Sad"
+			)
+			return
+		}
+		delegate.didRequestFollowers(for: user.login)
+		dismissVC()
 	}
 }

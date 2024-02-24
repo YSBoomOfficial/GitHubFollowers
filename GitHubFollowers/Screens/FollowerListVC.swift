@@ -7,10 +7,12 @@
 
 import UIKit
 
+protocol FollowerListVCDelegate: AnyObject {
+	func didRequestFollowers(for username: String)
+}
+
 class FollowerListVC: UIViewController {
-	enum Section {
-		case main
-	}
+	enum Section { case main }
 	
 	var collectionView: UICollectionView!
 	var datasource: UICollectionViewDiffableDataSource<Section, Follower>!
@@ -30,7 +32,7 @@ class FollowerListVC: UIViewController {
 		configureCollectionView()
 		configureDataSource()
 		configureSearchController()
-		fetchFollowers(for: username, page: currentPage)
+		getFollowers(for: username, page: currentPage)
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +40,7 @@ class FollowerListVC: UIViewController {
 		navigationController?.setNavigationBarHidden(false, animated: true)
 	}
 	
-	private func fetchFollowers(for username: String, page: Int) {
+	private func getFollowers(for username: String, page: Int) {
 		// [weak self] needed as NetworkManager has strong the VC
 		showLoadingView()
 		NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
@@ -122,7 +124,7 @@ extension FollowerListVC: UICollectionViewDelegate {
 		
 		if offsetY > (contentHeight - height) && hasMoreFollowers {
 			currentPage += 1
-			fetchFollowers(for: username, page: currentPage)
+			getFollowers(for: username, page: currentPage)
 		}
 	}
 	
@@ -130,13 +132,13 @@ extension FollowerListVC: UICollectionViewDelegate {
 		let activeArray = isSearching ? filteredFollowers : followers
 		let follower = activeArray[indexPath.item]
 		
-		let uerInfoVC = UserInfoVC()
-		uerInfoVC.username = follower.login
+		let userInfoVC = UserInfoVC()
+		userInfoVC.username = follower.login
+		userInfoVC.delegate = self
 		
-		let navigationController = UINavigationController(rootViewController: uerInfoVC)
+		let navigationController = UINavigationController(rootViewController: userInfoVC)
 		present(navigationController, animated: true)
 	}
-	
 }
 
 extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
@@ -153,3 +155,14 @@ extension FollowerListVC: UISearchResultsUpdating, UISearchBarDelegate {
 	}
 }
 
+extension FollowerListVC: FollowerListVCDelegate {
+	func didRequestFollowers(for username: String) {
+		self.username = username
+		currentPage = 1
+		title = username
+		followers.removeAll()
+		filteredFollowers.removeAll()
+		collectionView.setContentOffset(.zero, animated: true)
+		getFollowers(for: username, page: 1)
+	}
+}

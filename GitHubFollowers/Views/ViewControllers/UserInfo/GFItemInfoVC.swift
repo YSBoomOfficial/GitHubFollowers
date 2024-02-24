@@ -15,6 +15,10 @@ class GFItemInfoVC: UIViewController {
 	let itemInfoView2 = GFItemInfoView()
 	let actionButton = GFButton()
 	
+	weak var delegate: UserInfoVCDelegate!
+	
+	private let padding: CGFloat = 20
+	
 	init(user: User) {
 		super.init(nibName: nil, bundle: nil)
 		self.user = user
@@ -28,7 +32,12 @@ class GFItemInfoVC: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		configureVC()
-		configureSubviews()
+		configureStackView()
+		configureActionButton()
+	}
+	
+	@objc func didTapActionButton() {
+		fatalError("Subclass must ovveride this method")
 	}
 }
 
@@ -38,13 +47,10 @@ private extension GFItemInfoVC {
 		view.backgroundColor = .secondarySystemBackground
 	}
 	
-	func configureSubviews() {
-		let padding: CGFloat = 20
-		
+	func configureStackView() {
 		view.addSubview(stackView)
 		stackView.addArrangedSubview(itemInfoView1)
 		stackView.addArrangedSubview(itemInfoView2)
-		view.addSubview(actionButton)
 		
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		stackView.axis = .horizontal
@@ -55,7 +61,14 @@ private extension GFItemInfoVC {
 			stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
 			stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
 			stackView.heightAnchor.constraint(equalToConstant: 50),
-			
+		])
+	}
+	
+	func configureActionButton() {
+		view.addSubview(actionButton)
+		actionButton.addTarget(self, action: #selector(didTapActionButton), for: .touchUpInside)
+	
+		NSLayoutConstraint.activate([
 			actionButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -padding),
 			actionButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
 			actionButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),

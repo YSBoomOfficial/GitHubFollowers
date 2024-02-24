@@ -13,10 +13,11 @@ class GFRepoItemVC: GFItemInfoVC {
 		super.viewDidLoad()
 		configureItems()
 	}
-
-}
-
-private extension GFRepoItemVC {
+	
+	override func didTapActionButton() {
+		delegate.didTapGitHubProfile(for: user)
+	}
+	
 	func configureItems() {
 		itemInfoView1.set(itemInfoType: .repos, withCount: user.publicRepos)
 		itemInfoView2.set(itemInfoType: .gists, withCount: user.publicGists)
