@@ -57,9 +57,8 @@ class UserInfoVC: UIViewController {
 private extension UserInfoVC {
 	func configureVC() {
 		view.backgroundColor = .systemBackground
-		navigationItem.rightBarButtonItem = UIBarButtonItem(
-			title: "Done",
-			style: .done,
+		navigationItem.rightBarButtonItem = .init(
+			barButtonSystemItem: .done,
 			target: self,
 			action: #selector(dismissVC)
 		)

@@ -46,7 +46,7 @@ class FollowerListVC: UIViewController {
 		NetworkManager.shared.getFollowers(for: username, page: page) { [weak self] result in
 			guard let self else { return }
 			hideLoadingView()
-			 
+			
 			switch result {
 			case let .success(fetchedFollowers):
 				if fetchedFollowers.count < 100 { hasMoreFollowers = false }
@@ -80,12 +80,49 @@ class FollowerListVC: UIViewController {
 			self.datasource.apply(snapshot, animatingDifferences: true)
 		}
 	}
+	
+	@objc func addButtonTapped() {
+		showLoadingView()
+		NetworkManager.shared.getUser(for: username) { [weak self] result in
+			guard let self else { return }
+			hideLoadingView()
+			
+			switch result {
+			case let .success(user):
+				let favourite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+				PersistenceManager.updateWith(favourite: favourite, actionType: .add) { [weak self] error in
+					guard let self else { return }
+					
+					let (alertTitle, alertMessage) = if let error {
+						("Something went wrong", error.rawValue)
+					} else {
+						("Success", "You have successfully added \"\(favourite.login)\" to your favourites 🎉! ")
+					}
+					
+					presentGFAlert(title: alertTitle, message: alertMessage, buttonTitle: "Ok")
+				}
+				
+			case let .failure(error):
+				presentGFAlert(
+					title: "Something went wrong",
+					message: error.rawValue,
+					buttonTitle: "Ok"
+				)
+				
+			}
+		}
+	}
 }
 
 private extension FollowerListVC {
 	func configureVC() {
 		view.backgroundColor = .systemBackground
 		navigationController?.navigationBar.prefersLargeTitles = true
+		navigationItem.rightBarButtonItem = .init(
+			barButtonSystemItem: .add,
+			target: self,
+			action: #selector(addButtonTapped)
+		)
 	}
 	
 	func configureCollectionView() {
