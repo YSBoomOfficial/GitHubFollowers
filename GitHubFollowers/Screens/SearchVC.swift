@@ -15,6 +15,8 @@ class SearchVC: UIViewController {
 		backgroundColor: .systemGreen
 	)
 	
+	var logoImageViewTopConstraint: NSLayoutConstraint!
+	
 	var isUserNameEntered: Bool {
 		!usernameTextField.text!.isEmpty
 	}
@@ -63,8 +65,11 @@ fileprivate extension SearchVC {
 		logoImageView.translatesAutoresizingMaskIntoConstraints = false
 		logoImageView.image = .init(named: Images.ghLogo)!
 		
+		let topConstraintConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 20 : 80
+		logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: topConstraintConstant)
+		logoImageViewTopConstraint.isActive = true
+		
 		NSLayoutConstraint.activate([
-			logoImageView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 80),
 			logoImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 			logoImageView.heightAnchor.constraint(equalToConstant: 200),
 			logoImageView.widthAnchor.constraint(equalToConstant: 200)
