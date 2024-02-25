@@ -123,7 +123,7 @@ private extension GFUserInfoHeaderVC {
 			bioLabel.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: textImagePadding),
 			bioLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
 			bioLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-			bioLabel.heightAnchor.constraint(equalToConstant: 80)
+			bioLabel.heightAnchor.constraint(equalToConstant: 90)
 		])
 	}
 }

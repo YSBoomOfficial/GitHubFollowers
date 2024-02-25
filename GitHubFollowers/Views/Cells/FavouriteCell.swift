@@ -12,7 +12,6 @@ class FavouriteCell: UITableViewCell {
 	
 	let avatarImageView = GFAvatarImageView(frame: .zero)
 	let usernameLabel = GFTitleLabel(alignment: .left, fontSize: 26)
-	private let padding: CGFloat = 12
 	
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -33,8 +32,9 @@ class FavouriteCell: UITableViewCell {
 	}
 	
 	private func configure() {
-		accessoryType = .disclosureIndicator
+		let padding: CGFloat = 12
 		
+		accessoryType = .disclosureIndicator
 		addSubviews(avatarImageView, usernameLabel)
 		
 		NSLayoutConstraint.activate([

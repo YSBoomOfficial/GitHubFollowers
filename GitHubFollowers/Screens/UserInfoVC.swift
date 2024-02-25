@@ -8,8 +8,7 @@
 import UIKit
 
 protocol UserInfoVCDelegate: AnyObject {
-	func didTapGitHubProfile(for user: User)
-	func didTapGetFollowers(for user: User)
+	func didRequestFollowers(for username: String)
 }
 
 class UserInfoVC: UIViewController {
@@ -20,7 +19,7 @@ class UserInfoVC: UIViewController {
 	let itemView2 = UIView()
 	let dateLabel = GFBodyLabel(alignment: .center)
 	
-	weak var delegate: FollowerListVCDelegate!
+	weak var delegate: UserInfoVCDelegate!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -66,6 +65,7 @@ private extension UserInfoVC {
 	
 	func configureSubviews() {
 		let padding: CGFloat = 20
+		let itemHeight: CGFloat = 140
 		
 		for itemView in [headerView, itemView1, itemView2, dateLabel] {
 			view.addSubview(itemView)
@@ -79,35 +79,33 @@ private extension UserInfoVC {
 		
 		NSLayoutConstraint.activate([
 			headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: padding),
-			headerView.heightAnchor.constraint(equalToConstant: 180),
+			headerView.heightAnchor.constraint(equalToConstant: 210),
 			
 			itemView1.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: padding),
-			itemView1.heightAnchor.constraint(equalToConstant: 140),
+			itemView1.heightAnchor.constraint(equalToConstant: itemHeight),
 			
 			itemView2.topAnchor.constraint(equalTo: itemView1.bottomAnchor, constant: padding),
-			itemView2.heightAnchor.constraint(equalToConstant: 140),
+			itemView2.heightAnchor.constraint(equalToConstant: itemHeight),
 			
 			dateLabel.topAnchor.constraint(equalTo: itemView2.bottomAnchor, constant: padding),
-			dateLabel.heightAnchor.constraint(equalToConstant: 40)
+			dateLabel.heightAnchor.constraint(equalToConstant: 50)
 		])
 	}
 	
 	func addSections(for user: User) {
 		self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
 		
-		let repoItemVC = GFRepoItemVC(user: user)
-		repoItemVC.delegate = self
+		let repoItemVC = GFRepoItemVC(user: user, delegate: self)
 		self.add(childVC: repoItemVC, to: self.itemView1)
 		
-		let followerItemVC = GFFollowerItemVC(user: user)
-		followerItemVC.delegate = self
+		let followerItemVC = GFFollowerItemVC(user: user, delegate: self)
 		self.add(childVC: followerItemVC, to: self.itemView2)
 		
 		self.dateLabel.text = "GitHub since " + user.createdAt.convertToMonthYearFormat()
 	}
 }
 
-extension UserInfoVC: UserInfoVCDelegate {
+extension UserInfoVC: GFRepoItemVCDelegate {
 	func didTapGitHubProfile(for user: User) {
 		guard let url = URL(string: user.htmlUrl) else {
 			presentGFAlert(
@@ -119,7 +117,9 @@ extension UserInfoVC: UserInfoVCDelegate {
 		}
 		presentSafariVC(with: url)
 	}
-	
+}
+
+extension UserInfoVC: GFFollowerItemVCDelegate {
 	func didTapGetFollowers(for user: User) {
 		guard user.followers > 0 else {
 			presentGFAlert(

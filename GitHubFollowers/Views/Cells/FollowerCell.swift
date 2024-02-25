@@ -12,7 +12,6 @@ class FollowerCell: UICollectionViewCell {
 	
 	let avatarImageView = GFAvatarImageView(frame: .zero)
 	let usernameLabel = GFTitleLabel(alignment: .center, fontSize: 16)
-	private let padding: CGFloat = 8
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -33,6 +32,7 @@ class FollowerCell: UICollectionViewCell {
 	}
 	
 	private func configure() {
+		let padding: CGFloat = 8
 		addSubviews(avatarImageView, usernameLabel)
 		
 		NSLayoutConstraint.activate([

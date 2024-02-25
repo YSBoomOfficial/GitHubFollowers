@@ -15,8 +15,6 @@ class GFItemInfoVC: UIViewController {
 	let itemInfoView2 = GFItemInfoView()
 	let actionButton = GFButton()
 	
-	weak var delegate: UserInfoVCDelegate!
-	
 	private let padding: CGFloat = 20
 	
 	init(user: User) {

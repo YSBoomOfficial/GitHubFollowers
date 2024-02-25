@@ -7,11 +7,22 @@
 
 import Foundation
 
+protocol GFFollowerItemVCDelegate: AnyObject {
+	func didTapGetFollowers(for user: User)
+}
+
 class GFFollowerItemVC: GFItemInfoVC {
+	
+	var delegate: GFFollowerItemVCDelegate
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		configureItems()
+	}
+	
+	init(user: User, delegate: GFFollowerItemVCDelegate) {
+		self.delegate = delegate
+		super.init(user: user)
 	}
 	
 	override func didTapActionButton() {
