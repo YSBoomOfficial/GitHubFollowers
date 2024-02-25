@@ -29,6 +29,7 @@ class SearchVC: UIViewController {
 		// hiding nav bar in `viewDidLoad` hides it only the first time the view loads
 		
 		navigationController?.setNavigationBarHidden(true, animated: true)
+		usernameTextField.text = ""
 	}
 	
 	override func viewDidLoad() {
@@ -51,9 +52,7 @@ class SearchVC: UIViewController {
 			)
 			return
 		}
-		let followerListVC = FollowerListVC()
-		followerListVC.username = usernameTextField.text
-		followerListVC.title = usernameTextField.text
+		let followerListVC = FollowerListVC(username: usernameTextField.text!)
 		view.endEditing(true)
 		navigationController?.pushViewController(followerListVC, animated: true)
 	}
