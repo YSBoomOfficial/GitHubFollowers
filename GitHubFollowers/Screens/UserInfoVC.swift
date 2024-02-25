@@ -103,7 +103,7 @@ private extension UserInfoVC {
 		followerItemVC.delegate = self
 		self.add(childVC: followerItemVC, to: self.itemView2)
 		
-		self.dateLabel.text = "GitHub since " + user.createdAt.convertToFormattedDateString()
+		self.dateLabel.text = "GitHub since " + user.createdAt.convertToMonthYearFormat()
 	}
 }
 
