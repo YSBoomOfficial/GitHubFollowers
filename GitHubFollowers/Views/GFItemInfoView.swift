@@ -18,7 +18,7 @@ class GFItemInfoView: UIView {
 		
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		configrue()
+		configure()
 	}
 	
 	@available(*, unavailable)
@@ -44,10 +44,8 @@ class GFItemInfoView: UIView {
 		countLabel.text = "\(count)"
 	}
 	
-	private func configrue() {
-		addSubview(symbolImageView)
-		addSubview(titleLabel)
-		addSubview(countLabel)
+	private func configure() {
+		addSubviews(symbolImageView, titleLabel, countLabel)
 		
 		symbolImageView.translatesAutoresizingMaskIntoConstraints = false
 		symbolImageView.contentMode = .scaleAspectFill

@@ -34,6 +34,7 @@ class SearchVC: UIViewController {
 		super.viewDidLoad()
 		view.backgroundColor = .systemBackground
 		
+		view.addSubviews(logoImageView, usernameTextField, ctaButton)
 		configureLogoImageView()
 		configureUsernameTextField()
 		configureCTAButton()
@@ -58,7 +59,6 @@ class SearchVC: UIViewController {
 
 fileprivate extension SearchVC {
 	func configureLogoImageView() {
-		view.addSubview(logoImageView)
 		logoImageView.translatesAutoresizingMaskIntoConstraints = false
 		logoImageView.image = Images.ghLogo
 		
@@ -73,7 +73,6 @@ fileprivate extension SearchVC {
 	}
 	
 	func configureUsernameTextField() {
-		view.addSubview(usernameTextField)
 		usernameTextField.delegate = self
 		
 		NSLayoutConstraint.activate([
@@ -85,7 +84,6 @@ fileprivate extension SearchVC {
 	}
 	
 	func configureCTAButton() {
-		view.addSubview(ctaButton)
 		ctaButton.addTarget(
 			self,
 			action: #selector(pushFollowerListVC),

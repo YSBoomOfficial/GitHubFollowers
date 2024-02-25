@@ -31,6 +31,8 @@ class GFItemInfoVC: UIViewController {
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		view.addSubviews(stackView, actionButton)
+		stackView.addArrangedSubviews(itemInfoView1, itemInfoView2)
 		configureVC()
 		configureStackView()
 		configureActionButton()
@@ -48,10 +50,6 @@ private extension GFItemInfoVC {
 	}
 	
 	func configureStackView() {
-		view.addSubview(stackView)
-		stackView.addArrangedSubview(itemInfoView1)
-		stackView.addArrangedSubview(itemInfoView2)
-		
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		stackView.axis = .horizontal
 		stackView.distribution = .equalSpacing
@@ -65,7 +63,6 @@ private extension GFItemInfoVC {
 	}
 	
 	func configureActionButton() {
-		view.addSubview(actionButton)
 		actionButton.addTarget(self, action: #selector(didTapActionButton), for: .touchUpInside)
 	
 		NSLayoutConstraint.activate([

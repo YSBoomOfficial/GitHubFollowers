@@ -38,6 +38,15 @@ class GFUserInfoHeaderVC: UIViewController {
 
 private extension GFUserInfoHeaderVC {
 	func configureSubviews() {
+		view.addSubviews(
+			avatarImageView,
+			usernameLabel,
+			nameLabel,
+			locationImageView,
+			locationLabel,
+			bioLabel
+		)
+		
 		configureAvatarImageView()
 		configureUsernameLabel()
 		configureNameLabel()
@@ -47,7 +56,6 @@ private extension GFUserInfoHeaderVC {
 	}
 
 	func configureAvatarImageView() {
-		view.addSubview(avatarImageView)
 		NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] downloadedImage in
 			guard let self else { return }
 			DispatchQueue.main.async { self.avatarImageView.image = downloadedImage  }
@@ -62,7 +70,6 @@ private extension GFUserInfoHeaderVC {
 	}
 	
 	func configureUsernameLabel() {
-		view.addSubview(usernameLabel)
 		usernameLabel.text = user.login
 		
 		NSLayoutConstraint.activate([
@@ -74,7 +81,6 @@ private extension GFUserInfoHeaderVC {
 	}
 	
 	func configureNameLabel() {
-		view.addSubview(nameLabel)
 		nameLabel.text = user.name
 		
 		NSLayoutConstraint.activate([
@@ -86,7 +92,6 @@ private extension GFUserInfoHeaderVC {
 	}
 	
 	func configureLocationImageView() {
-		view.addSubview(locationImageView)
 		locationImageView.translatesAutoresizingMaskIntoConstraints = false
 		locationImageView.image = SFSymbols.location
 		locationImageView.tintColor = .secondaryLabel
@@ -100,7 +105,6 @@ private extension GFUserInfoHeaderVC {
 	}
 	
 	func configureLocationLabel() {
-		view.addSubview(locationLabel)
 		locationLabel.text = user.location ?? "No Location"
 		
 		NSLayoutConstraint.activate([
@@ -112,7 +116,6 @@ private extension GFUserInfoHeaderVC {
 	}
 	
 	func configureBioLabel() {
-		view.addSubview(bioLabel)
 		bioLabel.text = user.bio
 		bioLabel.numberOfLines = 3
 		
