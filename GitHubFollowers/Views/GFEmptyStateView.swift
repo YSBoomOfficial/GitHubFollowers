@@ -13,7 +13,8 @@ class GFEmptyStateView: UIView {
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		configure()
+		configureMessageLabel()
+		configureLogoImageView()
 	}
 	
 	convenience init(message: String) {
@@ -25,26 +26,34 @@ class GFEmptyStateView: UIView {
 		fatalError("init?(coder: NSCoder) has not been implemented")
 	}
 
-	private func configure() {
+	private func configureMessageLabel() {
 		addSubview(messageLabel)
-		addSubview(logoImageView)
 		
 		messageLabel.numberOfLines = 3
 		messageLabel.textColor = .secondaryLabel
-		
-		logoImageView.translatesAutoresizingMaskIntoConstraints = false
-		logoImageView.image = Images.emptyState
+
+		let labelCentreYConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? -50 : -150
 		
 		NSLayoutConstraint.activate([
-			messageLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -150),
+			messageLabel.centerYAnchor.constraint(equalTo: centerYAnchor, constant: labelCentreYConstant),
 			messageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40),
 			messageLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -40),
 			messageLabel.heightAnchor.constraint(equalToConstant: 200),
-			
+		])
+	}
+	
+	private func configureLogoImageView() {
+		addSubview(logoImageView)
+		logoImageView.translatesAutoresizingMaskIntoConstraints = false
+		logoImageView.image = Images.emptyState
+		
+		let imageViewBottomConstant: CGFloat = DeviceTypes.isiPhoneSE || DeviceTypes.isiPhone8Zoomed ? 80 : 40
+		
+		NSLayoutConstraint.activate([
 			logoImageView.widthAnchor.constraint(equalTo: widthAnchor, multiplier: 1.3),
 			logoImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 1.3),
 			logoImageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 170),
-			logoImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 40)
+			logoImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: imageViewBottomConstant)
 		])
 	}
 }
