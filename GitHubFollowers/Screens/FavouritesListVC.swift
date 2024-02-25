@@ -95,12 +95,14 @@ extension FavouritesListVC: UITableViewDelegate, UITableViewDataSource {
 	
 	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
 		guard editingStyle == .delete else { return }
-		let favourite = favourites[indexPath.row]
-		favourites.remove(at: indexPath.row)
-		tableView.deleteRows(at: [indexPath], with: .left)
 		
-		PersistenceManager.updateWith(favourite: favourite, actionType: .remove) { [weak self] error in
-			guard let self, let error else { return }
+		PersistenceManager.updateWith(favourite: favourites[indexPath.row], actionType: .remove) { [weak self] error in
+			guard let self else { return }
+			guard let error else {
+				favourites.remove(at: indexPath.row)
+				tableView.deleteRows(at: [indexPath], with: .left)
+				return
+			} 
 			presentGFAlert(
 				title: "Something went wrong",
 				message: error.rawValue,
