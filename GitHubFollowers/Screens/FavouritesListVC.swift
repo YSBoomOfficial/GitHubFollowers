@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FavouritesListVC: UIViewController {
+class FavouritesListVC: GFDataLoadingVC {
 	let tableView = UITableView()
 	
 	var favourites = [Follower]()
@@ -25,8 +25,10 @@ class FavouritesListVC: UIViewController {
 	}
 	
 	func getFavourites() {
+		showLoadingView()
 		PersistenceManager.retrieveFavourites { [weak self] result in
 			guard let self else { return }
+			hideLoadingView()
 			
 			switch result {
 			case let .success(favourites):
