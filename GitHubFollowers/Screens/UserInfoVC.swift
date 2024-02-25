@@ -41,12 +41,7 @@ class UserInfoVC: UIViewController {
 				DispatchQueue.main.async {
 					self.addSections(for: user)
 				}
-			case let .failure(error):
-				presentGFAlert(
-					title: "Something went wrong",
-					message: error.rawValue,
-					buttonTitle: "Ok"
-				)
+			case let .failure(error): presentGFAlert(error: error)
 			}
 		}
 	}

@@ -46,12 +46,7 @@ class FavouritesListVC: GFDataLoadingVC {
 						self.view.bringSubviewToFront(self.tableView)
 					}
 				}
-			case let .failure(error):
-				presentGFAlert(
-					title: "Something went wrong",
-					message: error.rawValue,
-					buttonTitle: "Ok"
-				)
+			case let .failure(error): presentGFAlert(error: error)
 			}
 		}
 	}
@@ -103,11 +98,8 @@ extension FavouritesListVC: UITableViewDelegate, UITableViewDataSource {
 				tableView.deleteRows(at: [indexPath], with: .left)
 				return
 			} 
-			presentGFAlert(
-				title: "Something went wrong",
-				message: error.rawValue,
-				buttonTitle: "Ok"
-			)
+			
+			presentGFAlert(error: error)
 		}
 	}
 }

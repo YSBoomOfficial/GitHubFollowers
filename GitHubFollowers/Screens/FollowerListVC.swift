@@ -72,12 +72,7 @@ class FollowerListVC: GFDataLoadingVC {
 				} else {
 					updateData(with: followers)
 				}
-			case let .failure(error):
-				presentGFAlert(
-					title: "Something went wrong",
-					message: error.rawValue,
-					buttonTitle: "Ok"
-				)
+			case let .failure(error): presentGFAlert(error: error)
 			}
 			isLoadingMoreFollowers = false
 		}
@@ -104,22 +99,18 @@ class FollowerListVC: GFDataLoadingVC {
 				PersistenceManager.updateWith(favourite: favourite, actionType: .add) { [weak self] error in
 					guard let self else { return }
 					
-					let (alertTitle, alertMessage) = if let error {
-						("Something went wrong", error.rawValue)
+					if let error {
+						presentGFAlert(error: error)
 					} else {
-						("Success", "You have successfully added \"\(favourite.login)\" to your favourites 🎉! ")
+						presentGFAlert(
+							title: "Success",
+							message: "You have successfully added \"\(favourite.login)\" to your favourites 🎉!",
+							buttonTitle: "Ok"
+						)
 					}
-					
-					presentGFAlert(title: alertTitle, message: alertMessage, buttonTitle: "Ok")
 				}
 				
-			case let .failure(error):
-				presentGFAlert(
-					title: "Something went wrong",
-					message: error.rawValue,
-					buttonTitle: "Ok"
-				)
-				
+			case let .failure(error): presentGFAlert(error: error)
 			}
 		}
 	}

@@ -19,6 +19,10 @@ extension UIViewController {
 		}
 	}
 	
+	func presentGFAlert(error: GFError) {
+		presentGFAlert(title: "Something went wrong", message: error.rawValue, buttonTitle: "Ok")
+	}
+	
 	func add(childVC: UIViewController, to containerView: UIView) {
 		addChild(childVC)
 		containerView.addSubview(childVC.view)
