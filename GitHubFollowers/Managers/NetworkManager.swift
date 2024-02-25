@@ -100,4 +100,32 @@ class NetworkManager {
 			}
 		}.resume()
 	}
+	
+	func downloadImage(
+		from urlString: String,
+		completion: @escaping (UIImage?) -> Void
+	) {
+		if let cachedImage = cache.object(forKey: urlString as NSString) {
+			completion(cachedImage)
+			return
+		}
+		
+		guard let url = URL(string: urlString) else {
+			completion(nil)
+			return
+		}
+		
+		URLSession.shared.dataTask(with: url) { [weak self] data, response, error in
+			guard let self,
+				  error == nil,
+				  (response as? HTTPURLResponse)?.statusCode == 200,
+				  let data, let downloadedImage = UIImage(data: data) else {
+				completion(nil)
+				return
+			}
+			
+			cache.setObject(downloadedImage, forKey: urlString as NSString)
+			completion(downloadedImage)
+		}.resume()
+	}
 }
