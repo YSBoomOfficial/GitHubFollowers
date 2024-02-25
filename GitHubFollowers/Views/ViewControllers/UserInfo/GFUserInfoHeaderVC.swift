@@ -56,10 +56,7 @@ private extension GFUserInfoHeaderVC {
 	}
 
 	func configureAvatarImageView() {
-		NetworkManager.shared.downloadImage(from: user.avatarUrl) { [weak self] downloadedImage in
-			guard let self else { return }
-			DispatchQueue.main.async { self.avatarImageView.image = downloadedImage  }
-		}
+		avatarImageView.downloadImage(fromUrl: user.avatarUrl)
 		
 		NSLayoutConstraint.activate([
 			avatarImageView.topAnchor.constraint(equalTo: view.topAnchor),
