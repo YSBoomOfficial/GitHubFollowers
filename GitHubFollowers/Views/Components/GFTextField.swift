@@ -19,7 +19,6 @@ class GFTextField: UITextField {
 		fatalError("init?(coder: NSCoder) has not been implemented")
 	}
 	
-	
 	private func configure() {
 		translatesAutoresizingMaskIntoConstraints = false
 		

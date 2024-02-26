@@ -8,9 +8,9 @@
 import UIKit
 
 class GFItemInfoVC: UIViewController {
-	var user: User!
+	let user: User
 	
-	let stackView = UIStackView()
+	private let stackView = UIStackView()
 	let itemInfoView1 = GFItemInfoView()
 	let itemInfoView2 = GFItemInfoView()
 	let actionButton = GFButton()
@@ -18,8 +18,8 @@ class GFItemInfoVC: UIViewController {
 	private let padding: CGFloat = 20
 	
 	init(user: User) {
-		super.init(nibName: nil, bundle: nil)
 		self.user = user
+		super.init(nibName: nil, bundle: nil)
 	}
 	
 	@available(*, unavailable)

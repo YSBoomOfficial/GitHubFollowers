@@ -8,20 +8,20 @@
 import UIKit
 
 class GFUserInfoHeaderVC: UIViewController {
-	var user: User!
+	private var user: User
 	
-	let avatarImageView = GFAvatarImageView(frame: .zero)
-	let usernameLabel = GFTitleLabel(alignment: .left, fontSize: 34)
-	let nameLabel = GFSecondaryTitleLabel(size: 18)
-	let locationImageView = UIImageView()
-	let locationLabel = GFSecondaryTitleLabel(size: 18)
-	let bioLabel = GFBodyLabel(alignment: .left)
+	private let avatarImageView = GFAvatarImageView(frame: .zero)
+	private let usernameLabel = GFTitleLabel(alignment: .left, fontSize: 34)
+	private let nameLabel = GFSecondaryTitleLabel(size: 18)
+	private let locationImageView = UIImageView()
+	private let locationLabel = GFSecondaryTitleLabel(size: 18)
+	private let bioLabel = GFBodyLabel(alignment: .left)
 	
 	private let textImagePadding: CGFloat = 12
 	
 	init(user: User) {
-		super.init(nibName: nil, bundle: nil)
 		self.user = user
+		super.init(nibName: nil, bundle: nil)
 	}
 	
 	@available(*, unavailable)

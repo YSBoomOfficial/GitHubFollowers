@@ -8,9 +8,9 @@
 import UIKit
 
 class FavouritesListVC: GFDataLoadingVC {
-	let tableView = UITableView()
+	private let tableView = UITableView()
 	
-	var favourites = [Follower]()
+	private var favourites = [Follower]()
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -24,7 +24,7 @@ class FavouritesListVC: GFDataLoadingVC {
 		getFavourites()
 	}
 	
-	func getFavourites() {
+	private func getFavourites() {
 		showLoadingView()
 		PersistenceManager.retrieveFavourites { [weak self] result in
 			guard let self else { return }
@@ -37,7 +37,7 @@ class FavouritesListVC: GFDataLoadingVC {
 		}
 	}
 	
-	func updateUI(with fetchedFavourites: [Follower]) {
+	private func updateUI(with fetchedFavourites: [Follower]) {
 		if fetchedFavourites.isEmpty {
 			DispatchQueue.main.async {
 				self.showEmptyStateView(with: "No Favourites?\nAdd one on the follower screen.", in: self.view)

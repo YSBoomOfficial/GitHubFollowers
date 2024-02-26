@@ -12,9 +12,9 @@ class GFItemInfoView: UIView {
 		case repos, gists, followers, following
 	}
 	
-	let symbolImageView = UIImageView()
-	let titleLabel = GFTitleLabel(alignment: .left, fontSize: 14)
-	let countLabel = GFTitleLabel(alignment: .center, fontSize: 14)
+	private let symbolImageView = UIImageView()
+	private let titleLabel = GFTitleLabel(alignment: .left, fontSize: 14)
+	private let countLabel = GFTitleLabel(alignment: .center, fontSize: 14)
 		
 	override init(frame: CGRect) {
 		super.init(frame: frame)

@@ -9,6 +9,8 @@ import UIKit
 
 class NetworkManager {
 	static let shared = NetworkManager()
+
+	#warning("TODO: Refactor to use URL Components ")
 	private let baseEndpoint = "https://api.github.com/users"
 	
 	let cache = NSCache<NSString, UIImage>()
@@ -21,8 +23,7 @@ class NetworkManager {
 		completion: @escaping (Result<[Follower], GFError>) -> Void
 	) {
 		let endpoint = "\(baseEndpoint)/\(username)/followers?per_page=100&page=\(page)"
-		print("Calling Endpoint: \(endpoint)")
-		
+			
 		guard let url = URL(string: endpoint) else {
 			completion(.failure(.invalidUsername))
 			return
@@ -51,7 +52,6 @@ class NetworkManager {
 				let followers = try decoder.decode([Follower].self, from: data)
 				completion(.success(followers))
 			} catch {
-				print("Decoding Error: \(error.localizedDescription)")
 				completion(.failure(.invalidData))
 				return
 			}
@@ -63,7 +63,6 @@ class NetworkManager {
 		completion: @escaping (Result<User, GFError>) -> Void
 	) {
 		let endpoint = "\(baseEndpoint)/\(username)"
-		print("Calling Endpoint: \(endpoint)")
 		
 		guard let url = URL(string: endpoint) else {
 			completion(.failure(.invalidUsername))
@@ -94,7 +93,6 @@ class NetworkManager {
 				let user = try decoder.decode(User.self, from: data)
 				completion(.success(user))
 			} catch {
-				print("Decoding Error: \(error.localizedDescription)")
 				completion(.failure(.invalidData))
 				return
 			}

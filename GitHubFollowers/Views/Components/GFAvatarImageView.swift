@@ -8,6 +8,7 @@
 import UIKit
 
 class GFAvatarImageView: UIImageView {	
+	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		configure()
@@ -18,17 +19,17 @@ class GFAvatarImageView: UIImageView {
 		fatalError("init?(coder: NSCoder) has not been implemented")
 	}
 	
-	private func configure() {
-		translatesAutoresizingMaskIntoConstraints = false
-		layer.cornerRadius = 10
-		clipsToBounds = true
-		image = Images.avatarPlaceholder
-	}
-	
 	func downloadImage(fromUrl urlString: String) {
 		NetworkManager.shared.downloadImage(from: urlString) { [weak self] image in
 			guard let self else { return }
 			DispatchQueue.main.async { self.image = image }
 		}
+	}
+	
+	private func configure() {
+		translatesAutoresizingMaskIntoConstraints = false
+		layer.cornerRadius = 10
+		clipsToBounds = true
+		image = Images.avatarPlaceholder
 	}
 }

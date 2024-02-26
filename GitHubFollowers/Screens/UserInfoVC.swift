@@ -12,17 +12,17 @@ protocol UserInfoVCDelegate: AnyObject {
 }
 
 class UserInfoVC: UIViewController {
-	var username: String!
+	private var username: String!
 	
-	let scrollView = UIScrollView()
-	let contentView = UIView()
+	private let scrollView = UIScrollView()
+	private let contentView = UIView()
 	
-	let headerView = UIView()
-	let itemView1 = UIView()
-	let itemView2 = UIView()
-	let dateLabel = GFBodyLabel(alignment: .center)
+	private let headerView = UIView()
+	private let itemView1 = UIView()
+	private let itemView2 = UIView()
+	private let dateLabel = GFBodyLabel(alignment: .center)
 	
-	weak var delegate: UserInfoVCDelegate!
+	private weak var delegate: UserInfoVCDelegate!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -30,6 +30,17 @@ class UserInfoVC: UIViewController {
 		configureScrollView()
 		configureSubviews()
 		fetchUserInfo()
+	}
+	
+	init(username: String, delegate: UserInfoVCDelegate) {
+		super.init(nibName: nil, bundle: nil)
+		self.username = username
+		self.delegate = delegate
+	}
+	
+	@available(*, unavailable)
+	required init?(coder: NSCoder) {
+		fatalError("init?(coder: NSCoder) has not been implemented")
 	}
 	
 	private func fetchUserInfo() {

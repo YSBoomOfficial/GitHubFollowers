@@ -12,8 +12,7 @@ protocol GFFollowerItemVCDelegate: AnyObject {
 }
 
 class GFFollowerItemVC: GFItemInfoVC {
-	
-	var delegate: GFFollowerItemVCDelegate
+	private weak var delegate: GFFollowerItemVCDelegate!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -29,7 +28,7 @@ class GFFollowerItemVC: GFItemInfoVC {
 		delegate.didTapGetFollowers(for: user)
 	}
 	
-	func configureItems() {
+	private func configureItems() {
 		itemInfoView1.set(itemInfoType: .followers, withCount: user.followers)
 		itemInfoView2.set(itemInfoType: .following, withCount: user.following)
 		actionButton.set(title: "Get Followers", backgroundColor: .systemGreen)

@@ -12,8 +12,7 @@ protocol GFRepoItemVCDelegate: AnyObject {
 }
 
 class GFRepoItemVC: GFItemInfoVC {
-	
-	var delegate: GFRepoItemVCDelegate!
+	private weak var delegate: GFRepoItemVCDelegate!
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -29,7 +28,7 @@ class GFRepoItemVC: GFItemInfoVC {
 		delegate.didTapGitHubProfile(for: user)
 	}
 	
-	func configureItems() {
+	private func configureItems() {
 		itemInfoView1.set(itemInfoType: .repos, withCount: user.publicRepos)
 		itemInfoView2.set(itemInfoType: .gists, withCount: user.publicGists)
 		actionButton.set(title: "GitHub Profile", backgroundColor: .systemPurple)

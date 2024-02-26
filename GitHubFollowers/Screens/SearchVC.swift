@@ -8,14 +8,14 @@
 import UIKit
 
 class SearchVC: UIViewController {
-	let logoImageView = UIImageView()
-	let usernameTextField = GFTextField()
-	let ctaButton = GFButton(
+	private let logoImageView = UIImageView()
+	private let usernameTextField = GFTextField()
+	private let ctaButton = GFButton(
 		title: "Get Followers",
 		backgroundColor: .systemGreen
 	)
 	
-	var isUserNameEntered: Bool {
+	private var isUserNameEntered: Bool {
 		!usernameTextField.text!.isEmpty
 	}
 	

@@ -8,25 +8,25 @@
 import UIKit
 
 class FollowerListVC: GFDataLoadingVC {
-	enum Section { case main }
+	private enum Section { case main }
 	
-	var collectionView: UICollectionView!
-	var datasource: UICollectionViewDiffableDataSource<Section, Follower>!
+	private var collectionView: UICollectionView!
+	private var datasource: UICollectionViewDiffableDataSource<Section, Follower>!
 	
-	var followers = [Follower]()
-	var filteredFollowers = [Follower]()
+	private var followers = [Follower]()
+	private var filteredFollowers = [Follower]()
 	
-	var username: String!
+	private var username: String
 	
-	var isLoadingMoreFollowers = true
-	var hasMoreFollowers = true
-	var currentPage = 1
+	private var isLoadingMoreFollowers = true
+	private var hasMoreFollowers = true
+	private var currentPage = 1
 	
-	var isSearching = false
+	private var isSearching = false
 	
 	init(username: String) {
-		super.init(nibName: nil, bundle: nil)
 		self.username = username
+		super.init(nibName: nil, bundle: nil)
 		title = username
 	}
 	
@@ -66,28 +66,6 @@ class FollowerListVC: GFDataLoadingVC {
 		}
 	}
 	
-	private func updateData(with followers: [Follower]) {
-		var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
-		snapshot.appendSections([.main])
-		snapshot.appendItems(followers)
-		DispatchQueue.main.async {
-			self.datasource.apply(snapshot, animatingDifferences: true)
-		}
-	}
-	
-	@objc func addButtonTapped() {
-		showLoadingView()
-		NetworkManager.shared.getUser(for: username) { [weak self] result in
-			guard let self else { return }
-			hideLoadingView()
-			
-			switch result {
-			case let .success(user): addUserToFavourites(user: user)
-			case let .failure(error): presentGFAlert(error: error)
-			}
-		}
-	}
-	
 	private func updateUI(with fetchedFollowers: [Follower]) {
 		if fetchedFollowers.count < 100 { hasMoreFollowers = false }
 		followers.append(contentsOf: fetchedFollowers)
@@ -101,6 +79,28 @@ class FollowerListVC: GFDataLoadingVC {
 			}
 		} else {
 			updateData(with: followers)
+		}
+	}
+	
+	private func updateData(with followers: [Follower]) {
+		var snapshot = NSDiffableDataSourceSnapshot<Section, Follower>()
+		snapshot.appendSections([.main])
+		snapshot.appendItems(followers)
+		DispatchQueue.main.async {
+			self.datasource.apply(snapshot, animatingDifferences: true)
+		}
+	}
+	
+	@objc private func addButtonTapped() {
+		showLoadingView()
+		NetworkManager.shared.getUser(for: username) { [weak self] result in
+			guard let self else { return }
+			hideLoadingView()
+			
+			switch result {
+			case let .success(user): addUserToFavourites(user: user)
+			case let .failure(error): presentGFAlert(error: error)
+			}
 		}
 	}
 	
@@ -119,6 +119,7 @@ class FollowerListVC: GFDataLoadingVC {
 			}
 		}
 	}
+	
 }
 
 private extension FollowerListVC {
@@ -161,6 +162,7 @@ private extension FollowerListVC {
 
 extension FollowerListVC: UICollectionViewDelegate {
 	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+		guard !isSearching else { return }
 		let offsetY = scrollView.contentOffset.y
 		let contentHeight = scrollView.contentSize.height
 		let height = scrollView.frame.size.height
@@ -176,10 +178,7 @@ extension FollowerListVC: UICollectionViewDelegate {
 		let activeArray = isSearching ? filteredFollowers : followers
 		let follower = activeArray[indexPath.item]
 		
-		let userInfoVC = UserInfoVC()
-		userInfoVC.username = follower.login
-		userInfoVC.delegate = self
-		
+		let userInfoVC = UserInfoVC(username: follower.login, delegate: self)		
 		let navigationController = UINavigationController(rootViewController: userInfoVC)
 		present(navigationController, animated: true)
 	}

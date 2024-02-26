@@ -8,22 +8,22 @@
 import UIKit
 
 class GFAlertVC: UIViewController {
-	let containerView = GFAlertContainerView()
-	let titleLabel = GFTitleLabel(alignment: .center, fontSize: 20)
-	let messageLabel = GFBodyLabel(alignment: .center)
-	let actionButton = GFButton(title: "Ok", backgroundColor: .systemPink)
+	private let containerView = GFAlertContainerView()
+	private let titleLabel = GFTitleLabel(alignment: .center, fontSize: 20)
+	private let messageLabel = GFBodyLabel(alignment: .center)
+	private let actionButton = GFButton(title: "Ok", backgroundColor: .systemPink)
 	
-	var alertTitle: String?
-	var message: String?
-	var buttonTitle: String?
+	private var alertTitle: String
+	private var message: String
+	private var buttonTitle: String
 	
 	private let padding: CGFloat = 20
 	
 	init(alertTitle: String, message: String, buttonTitle: String) {
-		super.init(nibName: nil, bundle: nil)
 		self.alertTitle = alertTitle
 		self.message = message
 		self.buttonTitle = buttonTitle
+		super.init(nibName: nil, bundle: nil)
 	}
 	
 	@available(*, unavailable)
@@ -40,10 +40,9 @@ class GFAlertVC: UIViewController {
 	@objc private func dismissVC() {
 		dismiss(animated: true)
 	}
-	
 }
 
-extension GFAlertVC {
+private extension GFAlertVC {
 	func configureContainerView() {
 		NSLayoutConstraint.activate([
 			containerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -54,7 +53,7 @@ extension GFAlertVC {
 	}
 	
 	func configureTitleLabel() {
-		titleLabel.text = alertTitle ?? "Something Went Wrong"
+		titleLabel.text = alertTitle
 		
 		NSLayoutConstraint.activate([
 			titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: padding),
@@ -65,7 +64,7 @@ extension GFAlertVC {
 	}
 	
 	func configureBodyLabel() {
-		messageLabel.text = message ?? "Unable to complete request"
+		messageLabel.text = message
 		messageLabel.numberOfLines = 4
 		
 		NSLayoutConstraint.activate([
@@ -77,7 +76,7 @@ extension GFAlertVC {
 	}
 	
 	func configureActionButton() {
-		actionButton.setTitle(buttonTitle ?? "Ok", for: .normal)
+		actionButton.setTitle(buttonTitle, for: .normal)
 		actionButton.addTarget(self, action: #selector(dismissVC), for: .touchUpInside)
 		
 		NSLayoutConstraint.activate([
