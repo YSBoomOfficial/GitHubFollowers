@@ -31,22 +31,22 @@ class FavouritesListVC: GFDataLoadingVC {
 			hideLoadingView()
 			
 			switch result {
-			case let .success(favourites):
-				if favourites.isEmpty {
-					DispatchQueue.main.async {
-						self.showEmptyStateView(
-							with: "No Favourites?\nAdd one on the follower screen.",
-							in: self.view
-						)
-					}
-				} else {
-					self.favourites = favourites
-					DispatchQueue.main.async {
-						self.tableView.reloadData()
-						self.view.bringSubviewToFront(self.tableView)
-					}
-				}
+			case let .success(fetchedFavourites): updateUI(with: fetchedFavourites)
 			case let .failure(error): presentGFAlert(error: error)
+			}
+		}
+	}
+	
+	func updateUI(with fetchedFavourites: [Follower]) {
+		if fetchedFavourites.isEmpty {
+			DispatchQueue.main.async {
+				self.showEmptyStateView(with: "No Favourites?\nAdd one on the follower screen.", in: self.view)
+			}
+		} else {
+			self.favourites = fetchedFavourites
+			DispatchQueue.main.async {
+				self.tableView.reloadData()
+				self.view.bringSubviewToFront(self.tableView)
 			}
 		}
 	}

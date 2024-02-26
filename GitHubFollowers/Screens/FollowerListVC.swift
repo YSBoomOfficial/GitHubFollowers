@@ -58,22 +58,10 @@ class FollowerListVC: GFDataLoadingVC {
 			hideLoadingView()
 			
 			switch result {
-			case let .success(fetchedFollowers):
-				if fetchedFollowers.count < 100 { hasMoreFollowers = false }
-				followers.append(contentsOf: fetchedFollowers)
-				
-				if followers.isEmpty {
-					DispatchQueue.main.async {
-						self.showEmptyStateView(
-							with: "This user doesn't have any followers. Go follow them 😀",
-							in: self.view
-						)
-					}
-				} else {
-					updateData(with: followers)
-				}
+			case let .success(fetchedFollowers): updateUI(with: fetchedFollowers)
 			case let .failure(error): presentGFAlert(error: error)
 			}
+			
 			isLoadingMoreFollowers = false
 		}
 	}
@@ -94,23 +82,40 @@ class FollowerListVC: GFDataLoadingVC {
 			hideLoadingView()
 			
 			switch result {
-			case let .success(user):
-				let favourite = Follower(login: user.login, avatarUrl: user.avatarUrl)
-				PersistenceManager.updateWith(favourite: favourite, actionType: .add) { [weak self] error in
-					guard let self else { return }
-					
-					if let error {
-						presentGFAlert(error: error)
-					} else {
-						presentGFAlert(
-							title: "Success",
-							message: "You have successfully added \"\(favourite.login)\" to your favourites 🎉!",
-							buttonTitle: "Ok"
-						)
-					}
-				}
-				
+			case let .success(user): addUserToFavourites(user: user)
 			case let .failure(error): presentGFAlert(error: error)
+			}
+		}
+	}
+	
+	private func updateUI(with fetchedFollowers: [Follower]) {
+		if fetchedFollowers.count < 100 { hasMoreFollowers = false }
+		followers.append(contentsOf: fetchedFollowers)
+		
+		if followers.isEmpty {
+			DispatchQueue.main.async {
+				self.showEmptyStateView(
+					with: "This user doesn't have any followers. Go follow them 😀",
+					in: self.view
+				)
+			}
+		} else {
+			updateData(with: followers)
+		}
+	}
+	
+	private func addUserToFavourites(user: User) {
+		let favourite = Follower(login: user.login, avatarUrl: user.avatarUrl)
+		PersistenceManager.updateWith(favourite: favourite, actionType: .add) { [weak self] error in
+			guard let self else { return }
+			if let error {
+				presentGFAlert(error: error)
+			} else {
+				presentGFAlert(
+					title: "Success",
+					message: "You have successfully added \"\(favourite.login)\" to your favourites 🎉!",
+					buttonTitle: "Ok"
+				)
 			}
 		}
 	}
